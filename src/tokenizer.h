@@ -54,8 +54,6 @@ typedef struct {
 
 Lexer lexer_init(const char *src);
 
-#ifndef LEXER_UTILS_IMPLEMENTATION
-
 #define lexer_at_end(l) ((l)->cur >= (l)->end)
 
 #define lexer_peek(l) *(l)->cur
@@ -69,7 +67,5 @@ Lexer lexer_init(const char *src);
     } else                \
       (l)->col++;         \
   } while (0)
-
-#endif /* ifndef LEXER_UTILS_IMPLEMENTATION */
 
 #endif  // TOKENIZER_H_

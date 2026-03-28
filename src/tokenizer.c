@@ -1,6 +1,5 @@
 // #include "da.h"
 
-#define LEXER_UTILS_IMPLEMENTATION
 #include "tokenizer.h"
 
 Lexer lexer_init(const char* src) {
