@@ -43,12 +43,34 @@ typedef struct {
 } Token;
 
 typedef struct {
-  const char *start;  // beginning of input
-  const char *cur;    // current position
-  const char *end;    // end of input
+  const char *src;
+  const char *cur;
+  const char *end;  // one past last char
+  const char *tok;
 
   size_t line;
   size_t col;
-} LexState;
+} Lexer;
+
+Lexer lexer_init(const char *src);
+
+#ifndef LEXER_UTILS_IMPLEMENTATION
+
+#define lexer_at_end(l) ((l)->cur >= (l)->end)
+
+#define lexer_peek(l) *(l)->cur
+
+#define lexer_advance(l)       \
+  do {                         \
+    if (*(l)->cur++ == '\n') { \
+      (l)->line++;             \
+      (l)->col = 1;            \
+    } else                     \
+      (l)->col++;              \
+                               \
+    return c;                  \
+  } while (0)
+
+#endif /* ifndef LEXER_UTILS_IMPLEMENTATION */
 
 #endif  // TOKENIZER_H_
