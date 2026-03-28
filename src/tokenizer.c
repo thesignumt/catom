@@ -36,6 +36,22 @@ Lexer lexer_init(const char* src) {
   };
 }
 
+static char* slice(const char* tok, size_t cur) {
+  if (!tok) return NULL;
+
+  size_t len = strlen(tok);
+  if (cur < 0) cur = 0;
+  if ((size_t)cur > len) cur = len;
+
+  size_t slice_len = len - cur;
+  char* result = malloc(slice_len + 1);  // +1 for null terminator
+  if (!result) return NULL;
+
+  memcpy(result, tok + cur, slice_len);
+  result[slice_len] = '\0';
+  return result;
+}
+
 void skip_whitespaces_and_comments(Lexer* l) {
   while (!LEXER_AT_END(l)) {
     char c = LEXER_PEEK(l);
