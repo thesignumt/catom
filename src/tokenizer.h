@@ -59,46 +59,6 @@ Lexer lexer_init(const char *src);
 
 Token lexer_next(Lexer *l);
 
-#define LEXER_AT_END(l) ((l)->cur >= (l)->end)
-
-#define LEXER_PEEK(l) *(l)->cur
-
-#define LEXER_PEEK_AHEAD(l, n) \
-  (((l)->cur + (n) < (l)->end) ? *((l)->cur + (n)) : '\0')
-
-#define LEXER_ADVANCE(l)   \
-  do {                     \
-    char _c = *(l)->cur++; \
-    if (_c == '\n') {      \
-      (l)->line++;         \
-      (l)->col = 1;        \
-    } else                 \
-      (l)->col++;          \
-                           \
-  } while (0)
-
-#define LEXER_ADVANCE_RET(l, c) \
-  do {                          \
-    c = *(l)->cur++;            \
-    if (c == '\n') {            \
-      (l)->line++;              \
-      (l)->col = 1;             \
-    } else                      \
-      (l)->col++;               \
-  } while (0)
-
-// for read_ident_or_kw
-#define MATCH_KEYWORD(len_val, str_val, token_type)                   \
-  if (len == (len_val) && strncmp(l->tok, (str_val), (len_val)) == 0) \
-    return lexer_emit(l, (token_type));
-
-static inline bool match_ch(Lexer *lexer, char e) {
-  if (LEXER_AT_END(lexer)) return false;
-  if (LEXER_PEEK(lexer) != e) return false;
-  LEXER_ADVANCE(lexer);
-  return true;
-}
-
 #define IS_DIGIT(c) ((unsigned)((c) - '0') <= 9)
 #define IS_ALPHA(c) (((unsigned)((c) | 32) - 'a') <= 25)
 #define IS_ALNUM(c) (IS_ALPHA(c) || IS_DIGIT(c))
