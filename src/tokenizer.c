@@ -1,6 +1,26 @@
 // #include "da.h"
 
+#include <stdlib.h>
+
 #include "tokenizer.h"
+
+static Token* make_token(TokenType type, const char* start, size_t length,
+                         size_t line, size_t col) {
+  Token* tok = (Token*)malloc(sizeof(Token));
+  if (!tok) return NULL;
+
+  tok->type = type;
+  tok->start = start;  // points into lexer source
+  tok->length = length;
+  tok->line = line;
+  tok->col = col;
+
+  return tok;
+}
+static Token* lexer_emit(Lexer* lex, TokenType type) {
+  size_t len = (size_t)(lex->cur - lex->tok);
+  return make_token(type, lex->tok, len, lex->line, lex->col - len);
+}
 
 Lexer lexer_init(const char* src) {
   const char* end = src;
