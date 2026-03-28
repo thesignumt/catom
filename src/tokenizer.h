@@ -1,6 +1,7 @@
 #ifndef TOKENIZER_H_
 #define TOKENIZER_H_
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -32,6 +33,7 @@ typedef enum {
   TT_SEMI,
 
   TT_EOF,
+  TT_ERROR
 } TokenType;
 
 typedef struct {
@@ -40,6 +42,7 @@ typedef struct {
   size_t length;
   size_t line;
   size_t col;
+  const char *message;
 } Token;
 
 typedef struct {
@@ -53,6 +56,8 @@ typedef struct {
 } Lexer;
 
 Lexer lexer_init(const char *src);
+
+Token lexer_next(Lexer *l);
 
 #define LEXER_AT_END(l) ((l)->cur >= (l)->end)
 
@@ -81,5 +86,21 @@ Lexer lexer_init(const char *src);
     } else                      \
       (l)->col++;               \
   } while (0)
+
+// for read_ident_or_kw
+#define MATCH_KEYWORD(len_val, str_val, token_type)                   \
+  if (len == (len_val) && strncmp(l->tok, (str_val), (len_val)) == 0) \
+    return lexer_emit(l, (token_type));
+
+static inline bool match_ch(Lexer *lexer, char e) {
+  if (LEXER_AT_END(lexer)) return false;
+  if (LEXER_PEEK(lexer) != e) return false;
+  LEXER_ADVANCE(lexer);
+  return true;
+}
+
+#define IS_DIGIT(c) ((unsigned)((c) - '0') <= 9)
+#define IS_ALPHA(c) (((unsigned)((c) | 32) - 'a') <= 25)
+#define IS_ALNUM(c) (IS_ALPHA(c) || IS_DIGIT(c))
 
 #endif  // TOKENIZER_H_
