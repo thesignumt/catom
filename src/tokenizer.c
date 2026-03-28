@@ -16,8 +16,33 @@ Lexer lexer_init(const char* src) {
   };
 }
 
-// Token next_token(Lexer* ls) { ; }
-//
+void skip_whitespaces_and_comments(Lexer* l) {
+  while (!lexer_at_end(l)) {
+    char c = lexer_peek(l);
+
+    // Skip spaces, tabs, carriage returns
+    if (c == ' ' || c == '\r' || c == '\t') {
+      lexer_advance(l);
+      continue;
+    }
+
+    // Skip newlines
+    if (c == '\n') {
+      lexer_advance(l);  // updates line/col
+      continue;
+    }
+
+    // Skip single-line comments
+    if (c == '/' && lexer_peek_ahead(l, 1) == '/') {
+      while (lexer_peek(l) != '\n' && !lexer_at_end(l)) lexer_advance(l);
+
+      continue;
+    }
+
+    // Anything else: stop
+    break;
+  }
+}
 // Token* Tokenize(const char* src) {
 //   Lexer lexer = lexer_init(src);
 //   Token* ts = NULL;
