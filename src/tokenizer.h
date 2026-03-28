@@ -54,21 +54,32 @@ typedef struct {
 
 Lexer lexer_init(const char *src);
 
-#define lexer_at_end(l) ((l)->cur >= (l)->end)
+#define LEXER_AT_END(l) ((l)->cur >= (l)->end)
 
-#define lexer_peek(l) *(l)->cur
+#define LEXER_PEEK(l) *(l)->cur
 
-#define lexer_peek_ahead(l, n) \
+#define LEXER_PEEK_AHEAD(l, n) \
   (((l)->cur + (n) < (l)->end) ? *((l)->cur + (n)) : '\0')
 
-#define lexer_advance(l, c) \
-  do {                      \
-    c = *(l)->cur++;        \
-    if (c == '\n') {        \
-      (l)->line++;          \
-      (l)->col = 1;         \
-    } else                  \
-      (l)->col++;           \
+#define LEXER_ADVANCE(l)   \
+  do {                     \
+    char _c = *(l)->cur++; \
+    if (_c == '\n') {      \
+      (l)->line++;         \
+      (l)->col = 1;        \
+    } else                 \
+      (l)->col++;          \
+                           \
+  } while (0)
+
+#define LEXER_ADVANCE_RET(l, c) \
+  do {                          \
+    c = *(l)->cur++;            \
+    if (c == '\n') {            \
+      (l)->line++;              \
+      (l)->col = 1;             \
+    } else                      \
+      (l)->col++;               \
   } while (0)
 
 #endif  // TOKENIZER_H_

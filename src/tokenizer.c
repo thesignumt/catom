@@ -37,24 +37,24 @@ Lexer lexer_init(const char* src) {
 }
 
 void skip_whitespaces_and_comments(Lexer* l) {
-  while (!lexer_at_end(l)) {
-    char c = lexer_peek(l);
+  while (!LEXER_AT_END(l)) {
+    char c = LEXER_PEEK(l);
 
     // Skip spaces, tabs, carriage returns
     if (c == ' ' || c == '\r' || c == '\t') {
-      lexer_advance(l);
+      LEXER_ADVANCE(l);
       continue;
     }
 
     // Skip newlines
     if (c == '\n') {
-      lexer_advance(l);  // updates line/col
+      LEXER_ADVANCE(l);  // updates line/col
       continue;
     }
 
     // Skip single-line comments
-    if (c == '/' && lexer_peek_ahead(l, 1) == '/') {
-      while (lexer_peek(l) != '\n' && !lexer_at_end(l)) lexer_advance(l);
+    if (c == '/' && LEXER_PEEK_AHEAD(l, 1) == '/') {
+      while (LEXER_PEEK(l) != '\n' && !LEXER_AT_END(l)) LEXER_ADVANCE(l);
 
       continue;
     }
