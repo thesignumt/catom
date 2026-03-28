@@ -58,14 +58,13 @@ Lexer lexer_init(const char *src);
 
 #define lexer_peek(l) *(l)->cur
 
-#define lexer_advance(l)  \
-  do {                    \
-    char c = *(l)->cur++; \
-    if (c == '\n') {      \
-      (l)->line++;        \
-      (l)->col = 1;       \
-    } else                \
-      (l)->col++;         \
+#define lexer_advance(l)       \
+  do {                         \
+    if (*(l)->cur++ == '\n') { \
+      (l)->line++;             \
+      (l)->col = 1;            \
+    } else                     \
+      (l)->col++;              \
   } while (0)
 
 #endif  // TOKENIZER_H_
