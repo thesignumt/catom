@@ -68,8 +68,6 @@ Lexer lexer_init(const char *src);
       (l)->col = 1;       \
     } else                \
       (l)->col++;         \
-                          \
-    return c;             \
   } while (0)
 
 #endif /* ifndef LEXER_UTILS_IMPLEMENTATION */
