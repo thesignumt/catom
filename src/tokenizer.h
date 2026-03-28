@@ -58,6 +58,9 @@ Lexer lexer_init(const char *src);
 
 #define lexer_peek(l) *(l)->cur
 
+#define lexer_peek_ahead(l, n) \
+  (((l)->cur + (n) < (l)->end) ? *((l)->cur + (n)) : '\0')
+
 #define lexer_advance(l)       \
   do {                         \
     if (*(l)->cur++ == '\n') { \
