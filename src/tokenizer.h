@@ -43,10 +43,10 @@ typedef struct {
 } Token;
 
 typedef struct {
-  const char *src;
-  const char *cur;
+  const char *src;  // start of input
+  const char *cur;  // current position
   const char *end;  // one past last char
-  const char *tok;
+  const char *tok;  // start of current token
 
   size_t line;
   size_t col;
