@@ -61,13 +61,14 @@ Lexer lexer_init(const char *src);
 #define lexer_peek_ahead(l, n) \
   (((l)->cur + (n) < (l)->end) ? *((l)->cur + (n)) : '\0')
 
-#define lexer_advance(l)       \
-  do {                         \
-    if (*(l)->cur++ == '\n') { \
-      (l)->line++;             \
-      (l)->col = 1;            \
-    } else                     \
-      (l)->col++;              \
+#define lexer_advance(l, c) \
+  do {                      \
+    c = *(l)->cur++;        \
+    if (c == '\n') {        \
+      (l)->line++;          \
+      (l)->col = 1;         \
+    } else                  \
+      (l)->col++;           \
   } while (0)
 
 #endif  // TOKENIZER_H_
