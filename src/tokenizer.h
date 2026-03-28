@@ -63,4 +63,6 @@ Token lexer_next(Lexer *l);
 #define IS_ALPHA(c) (((unsigned)((c) | 32) - 'a') <= 25)
 #define IS_ALNUM(c) (IS_ALPHA(c) || IS_DIGIT(c))
 
+Token *Tokenize(const char *src);
+
 #endif  // TOKENIZER_H_

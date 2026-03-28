@@ -1,9 +1,8 @@
-// #include "da.h"
-
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "da.h"
 #include "tokenizer.h"
 
 // +----------------------------------------------------------+
@@ -213,17 +212,16 @@ Token lexer_next(Lexer* l) {
   return error_token(l, "Unexpected character");
 }
 
-// Token* Tokenize(const char* src) {
-//   Lexer lexer = lexer_init(src);
-//   Token* ts = NULL;
-//
-//   while (1) {
-//     Token token = next_token(&lexer);
-//
-//     da_push(ts, token);
-//
-//     if (token.type == TT_EOF) break;
-//   }
-//
-//   return ts;
-// }
+Token* Tokenize(const char* src) {
+  Lexer lexer = lexer_init(src);
+  Token* ts = NULL;
+
+  Token token;
+  while (token.type != TT_EOF) {
+    token = lexer_next(&lexer);
+
+    da_push(ts, token);
+  }
+
+  return ts;
+}
