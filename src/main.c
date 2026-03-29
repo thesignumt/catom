@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 #include "da.h"
+#include "eval.h"
+#include "parser.h"
 #include "tokenizer.h"
 
 const char *token_type_to_string(TokenType type) {
@@ -81,11 +83,14 @@ void print_token(Token *t) {
 }
 
 int main(void) {
-  Token *tokens = Tokenize("if (foo == 42) { return 0; }");
+  // Token *tokens = Tokenize("if (foo == 42) { return 0; }");
+  Token *tokens = Tokenize("1 / 0 * 3");
+  Node *ast = parse(tokens);
+  double out = eval(ast);
 
-  for (int i = 0; i < (int)da_len(tokens); ++i) {
-    print_token(&tokens[i]);
-  }
+  for (size_t i = 0; i < da_len(tokens); ++i) print_token(&tokens[i]);
+
+  printf("%lf\n", out);
 
   da_free(tokens);
   return 0;
